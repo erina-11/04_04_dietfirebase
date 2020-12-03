@@ -1,0 +1,46 @@
+body{
+    max-width: 800px;
+    margin: auto;
+}
+header{
+    background-color: pink;
+    text-align: center;
+    align-items: flex-end;
+    justify-content: center;
+    align-content: center;
+    height: 100px;
+    padding: 5px;
+    line-height: 15px;
+}
+.labelsweight{
+    background-color: rgb(255, 166, 0);
+    justify-content: center;
+    text-align: center;
+    padding-top: 10px;
+}
+.buttons{
+    padding-bottom: 30px;
+}   
+.btn--orange,
+a.btn--orange {
+  color: #fff;
+  background-color: #eb6100;
+}
+.btn--orange:hover,
+a.btn--orange:hover {
+  color: #fff;
+  background: #f56500;
+}
+
+.fa-position-left {
+  position: absolute;
+  top: calc(50% - .5em);
+  left: 1rem;
+}
+
+.btn--radius,
+a.btn--radius,
+button.btn--radius
+{
+    border-radius: 100vh;
+}

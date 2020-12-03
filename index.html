@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Have fun on a diet !!!</title>
+    <link rel="stylesheet" href="diet.css">
+</head>
+
+<body>
+    <header class="title">
+        <h1>Have fun on a diet !!!</h1>
+        <p>♡Please record every day♡</p>
+    </header>
+
+    <main>
+        <div class="labelsweight">
+            <p>日付</p>
+            <input type="date" id="labels">
+            <p>体重</p>
+            <input type="text" id="weight">
+            <div>kg</div>
+
+            <ul class="buttons">
+                <input type="button" id="save" value="Save">
+                <input type="button" id="clear" value="Clear">
+            </ul>
+        </div>
+    </main>
+
+    <!-- <a href="" class="btn btn--orange"><i class="fas fa-phone-alt fa-position-left"></i>お電話はこちら<br>0120-12-3456</a> -->
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyBS_84tmPpEvidtdmCj7B7poZrJm612mDw",
+            authDomain: "diet-591e5.firebaseapp.com",
+            databaseURL: "https://diet-591e5.firebaseio.com",
+            projectId: "diet-591e5",
+            storageBucket: "diet-591e5.appspot.com",
+            messagingSenderId: "74854020415",
+            appId: "1:74854020415:web:0729b294c3e71c6e7d8f8a",
+            measurementId: "G-H9ER36VVXQ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+
+
+
+    <script>
+        // const labels = Math.floor(Math.random() * 10000)
+
+        // let myChart1 = { labels: "#labels", weight: "#weight" };
+
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- //jqueryの読み込み -->
+
+    <script>
+        const db = firebase.firestore().collection('diet');
+
+        $(function () {
+            //1.Save クリックイベント
+            // let num = 1//
+            $('#save').on('click', function () { // saveボタンクリックイベント
+                db.add({
+                    labels: firebase.firestore.FieldValue.serverTimestamp(),// val()で日付id labelsの内容を取得
+                    weight: $('#weight').val(), //val()で体重id weightの内容取得
+                    // obj = { //定数objのオブジェクト中身は
+                    // "labels": labels,
+                    // "weight": weight
+                })
+            });
+
+            // num = num + 1;
+            // const json = JSON.stringify(obj);//データをJSON形式に変換
+            // localStorage.setItem('myChart' + num, json); //ローカルストレージにJSON形式で保存
+
+        });
+
+        //2.clear クリックイベント
+        $('#clear').on('click', function () { // clearボタンクリックイベント
+            // localStorage.removeItem('myChart'); // key名を指定して削除
+            $('myChart').val(''); //空欄で上書きという意味よね？
+        });
+        // Point: 「.val()」は()に何か入れると入れた値で上書きする！
+
+        //3.ページ.読み込み：保存データ取得表示
+        // if (localStorage.getItem('myChart')) { // 値が保存されていれば
+            // const json_get = localStorage.getItem('myChart');
+            // const obj_get = JSON.parse(json_get); // データを取得
+            // $('myChart').val(obj_get.labels);
+            // $('myChart').val(obj_get.weight);
+
+            // $('#text_area').val(obj_get.text);
+            // 取得したデータで上書き
+        // }
+            // Point: データが保存されているときのみ取得するよう条件分岐！
+        // });
+    </script>
+
+    <canvas id="#myChart"></canvas>
+    <!-- グラフを表示 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    <!-- チャート.js読み込み -->
+    <script>
+        let ctx = document.getElementById("#myChart");
+        // canvas要素myChartを取得、変数ctxに入力
+        let myLineChart = new Chart(ctx, {
+            // 描画するグラフをnewChart()によって設定
+            type: 'line',
+            // 折れ線グラフ
+            data: {
+                labels: []
+                ,
+
+                // データの軸は日付
+                datasets: [
+                    {
+                        label: '自分のグラフ',
+                        // 誰のデータなのか
+
+                        data: [],
+                        // データの値
+                        borderColor: "rgba(255,0,0,1)",
+                        // borderColor: SVGFEGaussianBlurElement;
+                        // 線の色
+                        backgroundColor: "rgba(0,0,0,0)"
+                        // 線の下側の塗りつぶしの色
+                    },
+                ],
+            },
+            options: {
+                title: {
+                    // グラフのタイトル
+                    display: true,
+                    // タイトル表示の可否
+                    text: '体重の変化'
+                    // タイトル
+                },
+                scales: {
+                    // グラフ軸の設定
+                    yAxes: [{
+                        // y軸の設定
+                        ticks: {
+                            // y軸の目盛り
+                            suggestedMax: 110,
+                            // 軸の最大値
+                            suggestedMin: 40,
+                            // 軸の最小値
+                            stepSize: 10,
+                            // 軸の刻み幅
+                            callback: function (value, index, values) {
+                                return value + '㎏'
+                                // 単位
+                            }
+                        }
+                    }]
+                },
+            }
+        });
+    </script>
+
+
+
+
+
+</body>
+
+</html>
